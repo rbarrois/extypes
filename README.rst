@@ -139,7 +139,7 @@ This field will simply behave as a simple ``ConstrainedSet``.
 .. code-block:: pycon
 
     >>> fridge = Fridge(contents=['bacon'])
-    >>> fridge.add('eggs')
+    >>> fridge.contents.add('eggs')
     >>> fridge.save()
 
 
