@@ -5,6 +5,8 @@
 
 import unittest
 
+import extypes
+
 try:  # pragma: no cover
     import django
     django_loaded = True
@@ -86,6 +88,15 @@ class SetFieldTests(DjangoTestCase):
             django_extypes.SetField(choices=[
                 ('bad|bad', "OK"),
             ])
+
+    def test_choices_with_existing_set(self):
+        """SetField accepts an already-defined ConstrainedSet."""
+        Foods = extypes.ConstrainedSet(
+            {'eggs': "Eggs", 'spam': "Spam", 'bacon': "Bacon"},
+        )
+        field = django_extypes.SetField(choices=Foods)
+        self.assertEqual(Foods, field.set_definition)
+        self.assertEqual(Foods.choices, dict(field.django_choices))
 
     def test_base_operation(self):
         """A SetField field should act like a proper set."""

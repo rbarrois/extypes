@@ -123,12 +123,19 @@ Extensions: Django
 
 ``extypes`` also provides custom fields for Django:
 
-.. class:: extypes.django.SetField(choices, ...)
+.. code-block:: python
 
-    A :class:`SetField` wraps a :class:`~extypes.ConstrainedSet`.
+    from django.db import models
+    import extypes
+    import extypes.django
 
-    Its ``choices`` argument **MUST** be a list of two-tuples, or an existing
-    :class:`~extypes.ConstrainedSet` subclass.
+    Foods = extypes.ConstrainedSet(['eggs', 'spam', 'bacon'])
 
+    class Fridge(models.Model):
+        contents = extypes.django.SetField(choices=Foods)
 
+This field will simply behave as a simple ``ConstrainedSet``,
+and is displayed in forms as a multiple choice field.
+
+In the database, it is saved as a ``|``-separated list of enabled values.
 
