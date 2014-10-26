@@ -2,6 +2,9 @@
 # Copyright (c) 2014 Raphaël Barrois
 # This code is distributed under the two-clause BSD License.
 
+from __future__ import unicode_literals
+
+from . import compat
 
 def ConstrainedSet(choices, name=None):
     """A constrained set, where values are restricted to a set of options.
@@ -18,7 +21,10 @@ def ConstrainedSet(choices, name=None):
     of the allowed options.
     """
     if not name:
-        name = 'ConstrainedSet'
+        if compat.PY2:
+            name = b'ConstrainedSet'
+        else:
+            name = 'ConstrainedSet'
     return type(name, (BaseConstrainedSet,), {'name': name, 'choices': choices})
 
 
@@ -34,10 +40,7 @@ class BaseConstrainedSet(object):
         invalid_keys = [key for key in values if key not in self.choices]
         if invalid_keys:
             raise ValueError("Invalid keys %s, please use a value from %s." %
-                (','.join(sorted(invalid_keys)), ','.join(self.choices.keys())))
-
-    def _validate(self):
-        self._validate_choices(self.enabled_choices)
+                (','.join(sorted(invalid_keys)), ','.join(self.choices)))
 
     # Dict-like
 
