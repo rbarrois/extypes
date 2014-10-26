@@ -134,8 +134,16 @@ Extensions: Django
     class Fridge(models.Model):
         contents = extypes.django.SetField(choices=Foods)
 
-This field will simply behave as a simple ``ConstrainedSet``,
-and is displayed in forms as a multiple choice field.
+This field will simply behave as a simple ``ConstrainedSet``.
 
-In the database, it is saved as a ``|``-separated list of enabled values.
+.. code-block:: pycon
+
+    >>> fridge = Fridge(contents=['bacon'])
+    >>> fridge.add('eggs')
+    >>> fridge.save()
+
+
+It is displayed in forms as a multiple choice field.
+In the database, it is saved as a ``|``-separated list of enabled values
+(in the above example, the field is stored as ``|eggs|bacon|``).
 
