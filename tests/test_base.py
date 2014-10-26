@@ -45,6 +45,10 @@ class ConstrainedSetTests(unittest.TestCase):
         fresh = Foods(['eggs', 'bacon'])
         white = Foods(['eggs'])
 
+        # Bonus operations
+        self.assertEqual(white, ~ meat)
+        self.assertEqual(meat, ~ ~ meat)
+
         # Comparison
         self.assertTrue(meat.isdisjoint(white))
         self.assertTrue(white.isdisjoint(meat))

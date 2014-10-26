@@ -50,6 +50,12 @@ class BaseConstrainedSet(object):
     def items(self):
         return [(key, value) for key, value in self.choices.items() if key in self.enabled_choices]
 
+    # Extra
+
+    # ~ self
+    def __invert__(self):
+        return self.__class__(set(self.choices) - self.enabled_choices)
+
     # Dict & set-like
 
     def __iter__(self):
