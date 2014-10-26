@@ -50,6 +50,12 @@ class BaseConstrainedSet(object):
     def items(self):
         return [(key, value) for key, value in self.choices.items() if key in self.enabled_choices]
 
+    def __getitem__(self, key):
+        self._validate_choices([key])
+        if key not in self.enabled_choices:
+            raise KeyError("Key %r not in %r" % (key, self.enabled_choices))
+        return self.choices[key]
+
     # Extra
 
     # ~ self

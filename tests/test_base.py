@@ -151,6 +151,24 @@ class ConstrainedSetTests(unittest.TestCase):
         fresh2 ^= white
         self.assertEqual(Foods(['bacon']), fresh2)
 
+    def test_extra_operations(self):
+        """ConstrainedSet should get extra features when 'choices' is a dict."""
+
+        Foods = extypes.ConstrainedSet({
+            'spam': "Spam",
+            'eggs': "Eggs",
+            'bacon': "Bacon",
+            }, name='Foods')
+
+        meat = Foods(['spam', 'bacon'])
+        self.assertEqual(set(['spam', 'bacon']), set(meat.keys()))
+        self.assertEqual(set(["Spam", "Bacon"]), set(meat.values()))
+        self.assertEqual(set([('spam', "Spam"), ('bacon', "Bacon")]), set(meat.items()))
+
+        self.assertEqual("Spam", meat['spam'])
+        self.assertEqual("Bacon", meat['bacon'])
+        with self.assertRaises(KeyError):
+            meat['eggs']
 
 
 
