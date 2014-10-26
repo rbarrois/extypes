@@ -21,7 +21,8 @@ if django_loaded:
             INSTALLED_APPS=['tests.django_test_app'],
             MIDDLEWARE_CLASSES=[],
         )
-    django.setup()
+    if django.VERSION[:2] >= (1, 7):
+        django.setup()
 
 if django_loaded:  # pragma: no cover
     from extypes import django as django_extypes
