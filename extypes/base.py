@@ -39,8 +39,8 @@ class BaseConstrainedSet(object):
     def _validate_choices(self, values):
         invalid_keys = [key for key in values if key not in self.choices]
         if invalid_keys:
-            raise ValueError("Invalid keys %s, please use a value from %s." %
-                (','.join(sorted(invalid_keys)), ','.join(self.choices)))
+            raise ValueError("Invalid keys %r, please use a value from %s." %
+                (list(sorted(invalid_keys)), list(self.choices)))
 
     # Dict-like
 

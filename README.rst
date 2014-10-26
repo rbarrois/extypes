@@ -105,4 +105,30 @@ And iterable:
     >>> list(meat)
     ['spam', 'bacon']
 
+But only valid options are accepted:
+
+.. code-block:: pycon
+
+    >>> Foods = extypes.ConstrainedSet(['eggs', 'spam', 'bacon'])
+    >>> greens = Foods(['spinach']
+    Traceback (most recent call last):
+    ...
+    ValueError: Invalid keys ['spinach'], please use a value in ['spam', 'bacon', 'eggs'].
+
+
+Extensions: Django
+------------------
+
+.. currentmodule:: extypes.django
+
+``extypes`` also provides custom fields for Django:
+
+.. class:: extypes.django.SetField(choices, ...)
+
+    A :class:`SetField` wraps a :class:`~extypes.ConstrainedSet`.
+
+    Its ``choices`` argument **MUST** be a list of two-tuples, or an existing
+    :class:`~extypes.ConstrainedSet` subclass.
+
+
 
