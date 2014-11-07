@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals
 
 """extypes-based models for Django."""
 
+import django
 from django.core import exceptions
 from django.db import models
 from django.forms import fields as forms_fields
@@ -115,6 +116,8 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
             'form_class': forms_fields.TypedMultipleChoiceField,
             'choices_form_class': forms_fields.TypedMultipleChoiceField,
         }
+        if django.VERSION[:2] < (1, 6):
+            del defaults['choices_form_class']
         defaults.update(**kwargs)
         return super(SetField, self).formfield(**defaults)
 
