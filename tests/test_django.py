@@ -195,7 +195,7 @@ class SetFieldMigrationTests(DjangoTestCase):
         model = apps.get_model('django_test_app.Fridge')
         self.assertEqual(
             [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
-            model._meta.fields[1].set_definition.choices.items(),
+            list(model._meta.fields[1].set_definition.choices.items()),
         )
 
 @unittest.skipIf(not django_loaded, "Django not installed")
