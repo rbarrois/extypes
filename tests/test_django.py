@@ -3,6 +3,8 @@
 # Copyright (c) 2014 Raphaël Barrois
 # This code is distributed under the two-clause BSD License.
 
+from __future__ import absolute_import, unicode_literals
+
 import unittest
 
 import extypes
@@ -12,6 +14,12 @@ try:  # pragma: no cover
     django_loaded = True
 except ImportError:  # pragma: no cover
     django_loaded = False
+
+try:  # pragma: no cover
+    import south
+    south_loaded = True
+except ImportError:  # pragma: no cover
+    south_loaded = False
 
 if django_loaded:
     from django.conf import settings
@@ -173,6 +181,41 @@ class SetFieldTests(DjangoTestCase):
         form_html = prefilled_form.as_table()
         self.assertIn('value="spam" selected="selected"', form_html)
 
+
+@unittest.skipIf(not django_loaded, "Django not installed")
+@unittest.skipIf(django.VERSION[:2] < (1, 7), "Migrations unavailable in Django<1.7")
+class SetFieldMigrationTests(DjangoTestCase):
+    def test_modelstate(self):
+        from django.db.migrations import state as migrations_state
+        fridge_mstate = migrations_state.ModelState.from_model(models.Fridge)
+        project_state = migrations_state.ProjectState()
+        project_state.add_model_state(fridge_mstate)
+        apps = project_state.render()
+
+        model = apps.get_model('django_test_app.Fridge')
+        self.assertEqual(
+            [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
+            model._meta.fields[1].set_definition.choices.items(),
+        )
+
+@unittest.skipIf(not django_loaded, "Django not installed")
+@unittest.skipIf(not south_loaded, "South not installed")
+@unittest.skipIf(django.VERSION[:2] >= (1, 7), "South isn't compatible with Django>=1.7")
+class SetFieldSouthTests(DjangoTestCase):
+    def test_freezing_model(self):
+        import south.modelsinspector
+        frozen = south.modelsinspector.get_model_fields(models.Fridge)
+        self.assertEqual(
+            (
+                'extypes.django.SetField',  # Class
+                [],  # *args
+                {
+                    'blank': "True",
+                    'choices': [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
+                },
+            ),
+            frozen['contents'],
+        )
 
 
 if __name__ == '__main__':

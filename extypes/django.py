@@ -118,3 +118,16 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
         defaults.update(**kwargs)
         return super(SetField, self).formfield(**defaults)
 
+    def deconstruct(self):
+        name, path, args, kwargs = super(SetField, self).deconstruct()
+        del kwargs['max_length']
+        kwargs['choices'] = [(key, key) for key in self.set_definition.choices]
+        return name, path, args, kwargs
+
+    def south_field_triple(self):
+        """Return a suitable description for south."""
+        from south.modelsinspector import introspector
+        args, kwargs = introspector(self)
+        del kwargs['max_length']
+        kwargs['choices'] = [(key, key) for key in self.set_definition.choices]
+        return ('extypes.django.SetField', args, kwargs)
