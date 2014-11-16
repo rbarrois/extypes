@@ -1,0 +1,15 @@
+ChangeLog
+=========
+
+
+.. _v0.1.0:
+
+0.1.0 (2014-11-16)
+------------------
+
+*New:*
+
+    - Initial release, with Django support.
+
+
+.. vim:set ft=rst:
