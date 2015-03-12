@@ -37,7 +37,7 @@ class BaseConstrainedSet(object):
         self.enabled_choices = initial
 
     def _validate_choices(self, values):
-        invalid_keys = [key for key in values if key not in self.choices]
+        invalid_keys = set(values) - set(self.choices)
         if invalid_keys:
             raise ValueError("Invalid keys %r, please use a value from %s." %
                 (list(sorted(invalid_keys)), list(self.choices)))
