@@ -2,8 +2,6 @@
 # Copyright (c) 2014 Raphaël Barrois
 # This code is distributed under the two-clause BSD License.
 
-from .. import setup_django
-
 from django.db import models
 
 import extypes
