@@ -143,14 +143,14 @@ This field will simply behave as a simple ``ConstrainedSet``.
     >>> fridge.save()
 
 
+It is displayed in forms as a multiple choice field.
+In the database, it is saved as a ``|``-separated list of enabled values
+(in the above example, the field is stored as ``|eggs|bacon|``).
+
 .. note:: ``extypes.django.SetField`` can also receive a choice-like list:
 
           .. code-block:: python
 
               class Fridge(models.Model):
                   contents = extypes.django.SetField(choices=[('eggs', "Eggs"), ('spam', "Spam"), ('bacon', "Yummy bacon")])
-
-It is displayed in forms as a multiple choice field.
-In the database, it is saved as a ``|``-separated list of enabled values
-(in the above example, the field is stored as ``|eggs|bacon|``).
 
