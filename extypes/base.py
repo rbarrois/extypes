@@ -25,6 +25,7 @@ def ConstrainedSet(choices, name=None):
             name = b'ConstrainedSet'
         else:
             name = 'ConstrainedSet'
+
     return type(name, (BaseConstrainedSet,), {'name': name, 'choices': choices})
 
 
@@ -48,9 +49,17 @@ class BaseConstrainedSet(object):
         return [key for key in self.choices if key in self.enabled_choices]
 
     def values(self):
+        """Retrieve the values associated with the keys.
+
+        Only supported if the choices are a dict.
+        """
         return [value for key, value in self.choices.items() if key in self.enabled_choices]
 
     def items(self):
+        """Retrieve the items associated with the keys.
+
+        Only supported if the choices are a dict.
+        """
         return [(key, value) for key, value in self.choices.items() if key in self.enabled_choices]
 
     def __getitem__(self, key):

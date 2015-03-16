@@ -24,7 +24,7 @@ Links
 Getting started
 ---------------
 
-Intall the package from `PyPI`_, using pip:
+Intall the package from PyPI, using pip:
 
 .. code-block:: sh
 
@@ -58,7 +58,7 @@ This is a ``set()``-like object, but values can only be taken from a
 specific set of options.
 
 
-A ``ConstrainedSet`` is declared in a manner very similar to :class:`collections.namedtuple`:
+A ``ConstrainedSet`` is declared in a manner very similar to ``collections.namedtuple``:
 
 .. code-block:: python
 
@@ -142,6 +142,13 @@ This field will simply behave as a simple ``ConstrainedSet``.
     >>> fridge.contents.add('eggs')
     >>> fridge.save()
 
+
+.. note:: ``extypes.django.SetField`` can also receive a choice-like list:
+
+          .. code-block:: python
+
+              class Fridge(models.Model):
+                  contents = extypes.django.SetField(choices=[('eggs', "Eggs"), ('spam', "Spam"), ('bacon', "Yummy bacon")])
 
 It is displayed in forms as a multiple choice field.
 In the database, it is saved as a ``|``-separated list of enabled values

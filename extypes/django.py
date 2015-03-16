@@ -30,7 +30,10 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
     def __init__(self, choices, *args, **kwargs):
         if (isinstance(choices, type) and issubclass(choices, extypes_base.BaseConstrainedSet)):
             set_definition = choices
-            django_choices = list(choices.choices.items())
+            if hasattr(choices.choices, 'items'):
+                django_choices = list(choices.choices.items())
+            else:
+                django_choices = [(c, c) for c in choices.choices]
 
         else:
             if not is_iterable(choices):
