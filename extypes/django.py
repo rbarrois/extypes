@@ -68,7 +68,7 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
             value = value.split(self.db_separator)
 
         # Remove empty options
-        value = [opt for opt in value if opt]
+        value = [opt for opt in value if opt.strip()]
 
         return self.set_definition(value)
 

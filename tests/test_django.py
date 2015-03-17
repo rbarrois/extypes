@@ -121,6 +121,19 @@ class SetFieldTests(DjangoTestCase):
         fridge2 = models.Fridge.objects.get(pk=fridge2.pk)
         self.assertEqual(['spam', 'bacon'], list(fridge2.contents))
 
+        fridge3 = models.Fridge(contents=[])
+        fridge3.save()
+
+        fridge3 = models.Fridge.objects.get(pk=fridge3.pk)
+        self.assertEqual([], list(fridge3.contents))
+
+        fridge4 = models.Fridge.objects.create(contents=[])
+        fridge4 = models.Fridge.objects.get(pk=fridge4.pk)
+        self.assertEqual([], list(fridge4.contents))
+
+        list(models.Fridge.objects.all())
+
+
     def test_get_display(self):
         """A SetField should support get_FIELD_display()."""
         fridge = models.Fridge(contents=['bacon'])

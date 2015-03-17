@@ -2,6 +2,15 @@ ChangeLog
 =========
 
 
+.. _v0.2.1:
+
+0.2.1 (2015-03-17)
+------------------
+
+*Bugfix:*
+
+    - Fix handling of limited length charfields on postgres for ``extypes.django.SetField``
+
 .. _v0.2.0:
 
 0.2.0 (2015-03-16)
