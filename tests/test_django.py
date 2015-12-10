@@ -15,7 +15,10 @@ from .setup_django import south, south_loaded
 if django_loaded:  # pragma: no cover
     from extypes import django as django_extypes
     from .django_test_app import models
+    from django.core.management import call_command
+    from django.db import connection
     from django.test import TestCase as DjangoTestCase
+    from django.test import TransactionTestCase
     from django.test import simple as django_test_simple
     from django.test import utils as django_test_utils
     from django import forms as django_forms
@@ -190,6 +193,18 @@ class SetFieldMigrationTests(DjangoTestCase):
             [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
             list(model._meta.fields[1].set_definition.choices.items()),
         )
+
+
+@unittest.skipIf(not django_loaded, "Django not installed")
+@unittest.skipIf(django.VERSION[:2] < (1, 7), "Migrations unavailable in Django<1.7")
+class SetFieldMigrateTests(TransactionTestCase):
+    def test_migrate(self):
+        # Let's check that this does not crash
+        call_command('makemigrations', verbosity=0)
+        call_command('migrate', verbosity=0)
+        with connection.cursor() as cursor:
+            self.assertIn('django_test_app_fridge', connection.introspection.get_table_list(cursor))
+
 
 @unittest.skipIf(not django_loaded, "Django not installed")
 @unittest.skipIf(not south_loaded, "South not installed")

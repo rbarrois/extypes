@@ -86,7 +86,7 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
 
         We add self.db_separator on both sides to ease lookups.
         """
-        return self.db_separator.join([''] + list(value) + [''])
+        return self.db_separator.join([''] + list(value or ()) + [''])
 
     def get_display(self, value):
         """Display pretty-printer."""
