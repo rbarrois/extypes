@@ -9,17 +9,17 @@ import unittest
 
 import extypes
 
-from .setup_django import django, django_loaded
-from .setup_django import south, south_loaded
+from .setup_django import django_loaded
 
 if django_loaded:  # pragma: no cover
     from extypes import django as django_extypes
     from .django_test_app import models
+    import django
     from django.core.management import call_command
     from django.db import connection
     from django.test import TestCase as DjangoTestCase
     from django.test import TransactionTestCase
-    from django.test import simple as django_test_simple
+    from django.test import runner as django_test_runner
     from django.test import utils as django_test_utils
     from django import forms as django_forms
 
@@ -34,7 +34,7 @@ def setUpModule():
     if not django_loaded:  # pragma: no cover
         raise unittest.SkipTest("Django not installed")
     django_test_utils.setup_test_environment()
-    runner = django_test_simple.DjangoTestSuiteRunner()
+    runner = django_test_runner.DiscoverRunner()
     runner_state = runner.setup_databases()
     test_state.update({
         'runner': runner,
@@ -179,51 +179,33 @@ class SetFieldTests(DjangoTestCase):
 
 
 @unittest.skipIf(not django_loaded, "Django not installed")
-@unittest.skipIf(django.VERSION[:2] < (1, 7), "Migrations unavailable in Django<1.7")
 class SetFieldMigrationTests(DjangoTestCase):
     def test_modelstate(self):
-        from django.db.migrations import state as migrations_state
-        fridge_mstate = migrations_state.ModelState.from_model(models.Fridge)
-        project_state = migrations_state.ProjectState()
-        project_state.add_model_state(fridge_mstate)
-        apps = project_state.render()
-
-        model = apps.get_model('django_test_app.Fridge')
+        field = django_extypes.SetField(
+            choices=[
+                ('spam', "Spam"),
+                ('bacon', "Bacon"),
+                ('eggs', "Eggs"),
+            ],
+            blank=True,
+        )
         self.assertEqual(
-            [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
-            list(model._meta.fields[1].set_definition.choices.items()),
+            field.deconstruct()[3],
+            {'blank': True, 'choices': [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')]},
         )
 
 
 @unittest.skipIf(not django_loaded, "Django not installed")
-@unittest.skipIf(django.VERSION[:2] < (1, 7), "Migrations unavailable in Django<1.7")
 class SetFieldMigrateTests(TransactionTestCase):
     def test_migrate(self):
         # Let's check that this does not crash
         call_command('makemigrations', verbosity=0)
         call_command('migrate', verbosity=0)
         with connection.cursor() as cursor:
-            self.assertIn('django_test_app_fridge', connection.introspection.get_table_list(cursor))
-
-
-@unittest.skipIf(not django_loaded, "Django not installed")
-@unittest.skipIf(not south_loaded, "South not installed")
-@unittest.skipIf(django.VERSION[:2] >= (1, 7), "South isn't compatible with Django>=1.7")
-class SetFieldSouthTests(DjangoTestCase):
-    def test_freezing_model(self):
-        import south.modelsinspector
-        frozen = south.modelsinspector.get_model_fields(models.Fridge)
-        self.assertEqual(
-            (
-                'extypes.django.SetField',  # Class
-                [],  # *args
-                {
-                    'blank': "True",
-                    'choices': [('spam', 'spam'), ('bacon', 'bacon'), ('eggs', 'eggs')],
-                },
-            ),
-            frozen['contents'],
-        )
+            table_list = connection.introspection.get_table_list(cursor)
+            if django.VERSION[:2] >= (1, 8):
+                table_list = [t.name for t in connection.introspection.get_table_list(cursor)]
+            self.assertIn('django_test_app_fridge', table_list)
 
 
 if __name__ == '__main__':

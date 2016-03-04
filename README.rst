@@ -121,7 +121,7 @@ Extensions: Django
 
 .. currentmodule:: extypes.django
 
-``extypes`` also provides custom fields for Django - compatible with Django 1.6 and upwards.
+``extypes`` also provides custom fields for Django - compatible with Django 1.7 and upwards.
 
 .. code-block:: python
 
