@@ -9,12 +9,6 @@ except ImportError:  # pragma: no cover
     django_loaded = False
     django = None
 
-try:  # pragma: no cover
-    import south
-    south_loaded = True
-except ImportError:  # pragma: no cover
-    south_loaded = False
-    south = None
 
 if django_loaded:
     from django.conf import settings
@@ -24,5 +18,4 @@ if django_loaded:
             INSTALLED_APPS=['tests.django_test_app'],
             MIDDLEWARE_CLASSES=[],
         )
-    if django.VERSION[:2] >= (1, 7):
-        django.setup()
+    django.setup()

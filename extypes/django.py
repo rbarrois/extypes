@@ -7,11 +7,10 @@ from __future__ import absolute_import, unicode_literals
 
 """extypes-based models for Django."""
 
-import django
-from django.core import exceptions
+import collections
+
 from django.db import models
 from django.forms import fields as forms_fields
-from django.utils import datastructures
 from django.utils import six
 from django.utils.itercompat import is_iterable
 
@@ -44,8 +43,7 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
                     raise ValueError("choices must be an iterable of (code, human_readable) tuples; got entry %r in %r" % (item, choices))
 
             django_choices = choices
-            set_definition = extypes.ConstrainedSet(
-                datastructures.SortedDict(django_choices))
+            set_definition = extypes.ConstrainedSet(collections.OrderedDict(django_choices))
 
         for opt in set_definition.choices:
             if self.db_separator in opt:
@@ -119,8 +117,6 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
             'form_class': forms_fields.TypedMultipleChoiceField,
             'choices_form_class': forms_fields.TypedMultipleChoiceField,
         }
-        if django.VERSION[:2] < (1, 6):
-            del defaults['choices_form_class']
         defaults.update(**kwargs)
         return super(SetField, self).formfield(**defaults)
 
@@ -129,11 +125,3 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
         del kwargs['max_length']
         kwargs['choices'] = [(key, key) for key in self.set_definition.choices]
         return name, path, args, kwargs
-
-    def south_field_triple(self):
-        """Return a suitable description for south."""
-        from south.modelsinspector import introspector
-        args, kwargs = introspector(self)
-        del kwargs['max_length']
-        kwargs['choices'] = [(key, key) for key in self.set_definition.choices]
-        return ('extypes.django.SetField', args, kwargs)
