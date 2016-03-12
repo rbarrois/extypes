@@ -25,6 +25,7 @@ if django_loaded:  # pragma: no cover
 
 else:
     DjangoTestCase = unittest.TestCase
+    TransactionTestCase = unittest.TestCase
 
 
 test_state = {}
