@@ -18,7 +18,7 @@ Links
 
 * Package on PyPI: http://pypi.python.org/pypi/extypes
 * Repository and issues on GitHub: http://github.com/rbarrois/extypes
-* Doc on http://readthedocs.org/docs/extypes/
+* Doc on https://extypes.readthedocs.io/
 
 
 Getting started
