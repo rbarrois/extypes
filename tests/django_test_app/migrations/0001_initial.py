@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
             [
                 ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('contents', extypes.django.SetField(
-                    choices=[(b'spam', b'Spam'), (b'bacon', b'Bacon'), (b'eggs', b'Eggs')],
+                    choices=[('spam', 'Spam'), ('bacon', 'Bacon'), ('eggs', 'Eggs')],
                     blank=True,
                     default='', )),
                 ('flags', extypes.django.SetField(
-                    choices=[(b'clean', b'clean'), (b'online', b'online'), (b'open', b'open')],
+                    choices=[('clean', 'clean'), ('online', 'online'), ('open', 'open')],
                     blank=True,
                     default='', )),
             ],

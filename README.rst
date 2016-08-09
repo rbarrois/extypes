@@ -7,10 +7,10 @@ This project provides a few enhanced types for Python:
 * That's all for now.
 
 
-It also provides extensions for Django.
+It also provides extensions for Django (1.7 - 1.10).
 
 
-It has been fully tested with all versions of Python from 2.6 to 3.4; and is distributed under the BSD license.
+It has been fully tested with all versions of Python from 2.7 to 3.4; and is distributed under the BSD license.
 
 
 Links
@@ -18,7 +18,7 @@ Links
 
 * Package on PyPI: http://pypi.python.org/pypi/extypes
 * Repository and issues on GitHub: http://github.com/rbarrois/extypes
-* Doc on https://extypes.readthedocs.io/
+* Doc on https://extypes.readthedocs.io/ (not available yet)
 
 
 Getting started
@@ -154,3 +154,11 @@ In the database, it is saved as a ``|``-separated list of enabled values
               class Fridge(models.Model):
                   contents = extypes.django.SetField(choices=[('eggs', "Eggs"), ('spam', "Spam"), ('bacon', "Yummy bacon")])
 
+
+          In that case, the field definition is available at ``Fridge.contents.set_definition``:
+
+          .. code-block:: pycon
+
+              >>> f = Fridge(contents=Fridge.contents.set_definition(['eggs', 'spam']))
+              >>> f.get_contents_display()
+              "Eggs, Spam"

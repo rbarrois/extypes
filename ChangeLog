@@ -2,6 +2,20 @@ ChangeLog
 =========
 
 
+.. _v1.0.0:
+
+1.0.0 (2016-08-09)
+------------------
+
+*New:*
+
+    - Add support for Django 1.7-1.10
+    - For ``extypes.django.SetField``, the set definition is available at ``ModelClass.field_name.set_definition``.
+
+*Backwards incompatible:*
+
+    - ``extypes.django.SetField`` won't coerce values dynamically; a passed-in list won't be converted magically/
+
 .. _v0.2.3:
 
 0.2.3 (2016-03-12)

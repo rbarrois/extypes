@@ -17,14 +17,14 @@ class Migration(migrations.Migration):
             model_name='fridge',
             name='contents',
             field=extypes.django.SetField(
-                choices=[(b'spam', b'Spam'), (b'bacon', b'Bacon'), (b'eggs', b'Eggs')], blank=True,),
+                choices=[('spam', 'Spam'), ('bacon', 'Bacon'), ('eggs', 'Eggs')], blank=True,),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='fridge',
             name='flags',
             field=extypes.django.SetField(
-                choices=[(b'clean', b'clean'), (b'online', b'online'), (b'open', b'open')], blank=True),
+                choices=[('clean', 'clean'), ('online', 'online'), ('open', 'open')], blank=True),
             preserve_default=True,
         ),
     ]

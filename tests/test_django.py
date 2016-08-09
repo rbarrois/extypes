@@ -60,20 +60,22 @@ class SetFieldTests(DjangoTestCase):
 
     def test_validation(self):
         """full_clean() should accept valid defaults."""
+        Foods = models.Fridge.contents.set_definition
+
         # Empty
         fridge = models.Fridge()
         fridge.full_clean()
 
         # One item
-        fridge2 = models.Fridge(contents=['spam'])
+        fridge2 = models.Fridge(contents=Foods(['spam']))
         fridge2.full_clean()
 
         # Two items
-        fridge3 = models.Fridge(contents=['spam', 'bacon'])
+        fridge3 = models.Fridge(contents=Foods(['spam', 'bacon']))
         fridge3.full_clean()
 
         with self.assertRaises(ValueError):
-            fridge4 = models.Fridge(contents=['spam', 'milk'])
+            fridge4 = models.Fridge(contents=Foods(['spam', 'milk']))
 
     def test_choices_validation(self):
         """SetField won't accept invalid choices."""
@@ -93,7 +95,8 @@ class SetFieldTests(DjangoTestCase):
 
     def test_base_operation(self):
         """A SetField field should act like a proper set."""
-        fridge = models.Fridge(contents=['bacon'])
+        Foods = models.Fridge.contents.set_definition
+        fridge = models.Fridge(contents=Foods(['bacon']))
         self.assertEqual(1, len(fridge.contents))
         self.assertEqual(['bacon'], list(fridge.contents))
         self.assertTrue('bacon' in fridge.contents)
@@ -106,7 +109,7 @@ class SetFieldTests(DjangoTestCase):
         fridge.contents.remove('bacon')
         self.assertEqual(['spam'], list(fridge.contents))
 
-        fridge.contents = ['bacon', 'eggs']
+        fridge.contents = Foods(['bacon', 'eggs'])
         self.assertEqual(['bacon', 'eggs'], list(fridge.contents))
         # Properly converted into a ConstrainedSet instance
         self.assertNotEqual(['bacon', 'eggs'], fridge.contents)
@@ -140,10 +143,11 @@ class SetFieldTests(DjangoTestCase):
 
     def test_get_display(self):
         """A SetField should support get_FIELD_display()."""
-        fridge = models.Fridge(contents=['bacon'])
+        Foods = models.Fridge.contents.set_definition
+        fridge = models.Fridge(contents=Foods(['bacon']))
         self.assertEqual("Bacon", fridge.get_contents_display())
 
-        fridge2 = models.Fridge(contents=['bacon', 'spam'])
+        fridge2 = models.Fridge(contents=Foods(['bacon', 'spam']))
         self.assertEqual("Spam, Bacon", fridge2.get_contents_display())
 
     def test_form_field(self):

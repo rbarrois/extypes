@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 
 import collections
 
+import django
 from django.db import models
 from django.forms import fields as forms_fields
 from django.utils import six
@@ -17,7 +18,14 @@ from django.utils.itercompat import is_iterable
 import extypes
 from extypes import base as extypes_base
 
-class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
+
+if django.VERSION[:2] < (1, 8):
+    _parent = six.with_metaclass(models.SubfieldBase, models.Field)
+else:
+    _parent = models.Field
+
+
+class SetField(_parent):
     """A SQL SET field.
 
     Usage:
@@ -70,6 +78,13 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
 
         return self.set_definition(value)
 
+    def from_db_value(self, value, expression, connection, context):
+        """Convert from the database format.
+
+        This should be the inverse of self.get_prep_value()
+        """
+        return self.to_python(value)
+
     def db_type(self, connection):
         """Storage in the database.
 
@@ -100,6 +115,13 @@ class SetField(six.with_metaclass(models.SubfieldBase, models.Field)):
         which returns a comma-separated list of displays.
         """
         super(SetField, self).contribute_to_class(cls, name, **kwargs)
+        cls_attr = getattr(cls, self.attname, None)
+        if cls_attr is None:
+            cls_attr = type(self.attname, (object,), {'set_definition': self.set_definition})
+            setattr(cls, self.attname, cls_attr)
+
+        setattr(cls_attr, 'set_definition', self.set_definition)
+
         def _get_FIELD_display(instance):
             value = getattr(instance, self.attname)
             return self.get_display(value)
