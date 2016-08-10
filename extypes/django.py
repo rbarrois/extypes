@@ -19,13 +19,7 @@ import extypes
 from extypes import base as extypes_base
 
 
-if django.VERSION[:2] < (1, 8):
-    _parent = six.with_metaclass(models.SubfieldBase, models.Field)
-else:
-    _parent = models.Field
-
-
-class SetField(_parent):
+class SetField(models.Field):
     """A SQL SET field.
 
     Usage:
@@ -111,13 +105,19 @@ class SetField(_parent):
     def contribute_to_class(self, cls, name, **kwargs):
         """Contribute to the Model subclass.
 
-        We just set our custom get_FIELD_display(),
-        which returns a comma-separated list of displays.
+        We set our custom get_FIELD_display(),
+        which returns a comma-separated list of displays; and
+        add a "set_definition" attribute to the class-level attribute descriptor.
         """
         super(SetField, self).contribute_to_class(cls, name, **kwargs)
-        cls_attr = getattr(cls, self.attname, None)
-        if cls_attr is None:
-            cls_attr = type(self.attname, (object,), {'set_definition': self.set_definition})
+
+        if django.VERSION[:2] < (1, 8):
+            from django.db.models.fields import subclassing
+            setattr(cls, self.name, subclassing.Creator(self))
+
+        cls_attr = getattr(cls, self.name, None)
+        if django.VERSION[:2] < (1, 10) and cls_attr is None:
+            cls_attr = type(str(self.attname), (object,), {'set_definition': self.set_definition})
             setattr(cls, self.attname, cls_attr)
 
         setattr(cls_attr, 'set_definition', self.set_definition)
