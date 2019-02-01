@@ -88,7 +88,7 @@ class SetField(models.Field):
 
         Should go for more efficient options, though.
         """
-        return 'char(%d)' % self.max_length
+        return 'text'
 
     def get_prep_value(self, value):
         """Convert to a simple, serializable string.

@@ -1,6 +1,14 @@
 ChangeLog
 =========
 
+.. _v2.0.0:
+
+2.0.0 (unreleased)
+------------------
+
+*New:*
+
+    - ``extypes.django.SetField`` now stores values with the ``text`` SQL type instead of ``char(n)``. When migrating from a previous version of extypes, this will generate a database migration.
 
 1.1.0 (unreleased)
 ------------------
