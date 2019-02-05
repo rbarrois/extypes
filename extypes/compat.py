@@ -5,12 +5,11 @@
 
 from __future__ import unicode_literals
 
-"""Python 2 backwards compatibility layer."""
-
 import sys
+
+"""Python 2 backwards compatibility layer."""
 
 if sys.version_info[0] == 2:
     PY2 = True
 else:
     PY2 = False
-

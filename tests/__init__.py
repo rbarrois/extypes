@@ -3,4 +3,4 @@
 # This code is distributed under the two-clause BSD License.
 
 # Ensure Django is loaded/configured before anything else happens.
-from . import setup_django
+from . import setup_django  # noqa

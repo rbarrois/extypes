@@ -6,6 +6,6 @@ __version__ = '1.0.1'
 __author__ = 'Raphaël Barrois <raphael.barrois+extypes@polytechnique.org>'
 
 
-from .base import (
+from .base import (  # noqa
     ConstrainedSet,
 )

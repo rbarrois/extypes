@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from . import compat
 
+
 def ConstrainedSet(choices, name=None):
     """A constrained set, where values are restricted to a set of options.
 
@@ -40,8 +41,10 @@ class BaseConstrainedSet(object):
     def _validate_choices(self, values):
         invalid_keys = set(values) - set(self.choices)
         if invalid_keys:
-            raise ValueError("Invalid keys %r, please use a value from %s." %
-                (list(sorted(invalid_keys)), list(self.choices)))
+            raise ValueError(
+                "Invalid keys %r, please use a value from %s." %
+                (list(sorted(invalid_keys)), list(self.choices))
+            )
 
     # Dict-like
 
@@ -239,5 +242,3 @@ class BaseConstrainedSet(object):
 
     def __str__(self):
         return ','.join(self.keys())
-
-

@@ -75,7 +75,7 @@ class SetFieldTests(DjangoTestCase):
         fridge3.full_clean()
 
         with self.assertRaises(ValueError):
-            fridge4 = models.Fridge(contents=Foods(['spam', 'milk']))
+            models.Fridge(contents=Foods(['spam', 'milk']))
 
     def test_choices_validation(self):
         """SetField won't accept invalid choices."""
@@ -139,7 +139,6 @@ class SetFieldTests(DjangoTestCase):
         self.assertEqual([], list(fridge4.contents))
 
         list(models.Fridge.objects.all())
-
 
     def test_get_display(self):
         """A SetField should support get_FIELD_display()."""

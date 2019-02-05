@@ -5,8 +5,6 @@
 
 from __future__ import absolute_import, unicode_literals
 
-"""extypes-based models for Django."""
-
 import collections
 
 import django
@@ -17,6 +15,8 @@ from django.utils.itercompat import is_iterable
 
 import extypes
 from extypes import base as extypes_base
+
+"""extypes-based models for Django."""
 
 
 class SetField(models.Field):
@@ -42,15 +42,19 @@ class SetField(models.Field):
 
             for item in choices:
                 if len(item) != 2:
-                    raise ValueError("choices must be an iterable of (code, human_readable) tuples; got entry %r in %r" % (item, choices))
+                    raise ValueError(
+                        "choices must be an iterable of (code, human_readable) tuples; got entry %r in %r"
+                        % (item, choices)
+                    )
 
             django_choices = choices
             set_definition = extypes.ConstrainedSet(collections.OrderedDict(django_choices))
 
         for opt in set_definition.choices:
             if self.db_separator in opt:
-                raise ValueError("%r is forbidden in choices; found in %r"
-                    % (self.db_separator, opt))
+                raise ValueError(
+                    "%r is forbidden in choices; found in %r" % (self.db_separator, opt)
+                )
 
         self.django_choices = django_choices
         self.set_definition = set_definition

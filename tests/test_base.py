@@ -7,6 +7,7 @@ import unittest
 
 import extypes
 
+
 class ConstrainedSetTests(unittest.TestCase):
     def test_instantiate(self):
         noname = extypes.ConstrainedSet(['a', 'b', 'c'])
@@ -154,11 +155,14 @@ class ConstrainedSetTests(unittest.TestCase):
     def test_extra_operations(self):
         """ConstrainedSet should get extra features when 'choices' is a dict."""
 
-        Foods = extypes.ConstrainedSet({
-            'spam': "Spam",
-            'eggs': "Eggs",
-            'bacon': "Bacon",
-            }, name='Foods')
+        Foods = extypes.ConstrainedSet(
+            {
+                'spam': "Spam",
+                'eggs': "Eggs",
+                'bacon': "Bacon",
+            },
+            name='Foods',
+        )
 
         meat = Foods(['spam', 'bacon'])
         self.assertEqual(set(['spam', 'bacon']), set(meat.keys()))
@@ -169,7 +173,6 @@ class ConstrainedSetTests(unittest.TestCase):
         self.assertEqual("Bacon", meat['bacon'])
         with self.assertRaises(KeyError):
             meat['eggs']
-
 
 
 if __name__ == '__main__':

@@ -7,7 +7,6 @@ from django.db import models
 import extypes
 from extypes import django as extypes_django
 
-
 flags = extypes.ConstrainedSet(['clean', 'online', 'open'])
 
 
