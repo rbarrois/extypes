@@ -160,7 +160,7 @@ class SetFieldTests(DjangoTestCase):
         # Check form HTML
         base_form = MyForm()
         form_html = base_form.as_table()
-        self.assertIn('multiple="multiple"', form_html)
+        self.assertIn(' multiple', form_html)
         self.assertIn('contents', form_html)
         self.assertIn("eggs", form_html)
         self.assertIn("Eggs", form_html)
@@ -180,7 +180,7 @@ class SetFieldTests(DjangoTestCase):
         fridge = models.Fridge(contents=['spam', 'bacon'])
         prefilled_form = MyForm(instance=fridge)
         form_html = prefilled_form.as_table()
-        self.assertIn('value="spam" selected="selected"', form_html)
+        self.assertIn('value="spam" selected', form_html)
 
 
 @unittest.skipIf(not django_loaded, "Django not installed")
