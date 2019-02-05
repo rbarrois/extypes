@@ -1,0 +1,6 @@
+# Django added by tox.
+
+# Linting
+check-manifest
+isort
+flake8

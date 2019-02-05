@@ -1,0 +1,10 @@
+include ChangeLog README.rst
+include requirements*.txt
+
+graft extypes
+graft tests
+
+global-exclude *.py[cod] __pycache__ .*swp
+prune .github
+
+include Makefile tox.ini .flake8

@@ -1,0 +1,12 @@
+-e .
+-r requirements_test.txt
+
+# Tooling
+tox
+
+# Extra deps
+Django
+
+# Release
+zest.releaser[recommended]
+

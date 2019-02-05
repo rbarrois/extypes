@@ -1,3 +1,0 @@
-Django>=1.7
-coverage
-setuptools>=0.8
