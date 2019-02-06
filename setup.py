@@ -32,6 +32,7 @@ setup(
     name=PACKAGE,
     version=get_version(PACKAGE),
     description="Enhancements over Python's standard types",
+    long_description=''.join(codecs.open('README.rst', 'r', 'utf-8').readlines()),
     author="Raphaël Barrois",
     author_email="raphael.barrois+%s@polytechnique.org" % PACKAGE,
     url='https://github.com/rbarrois/%s' % PACKAGE,
@@ -41,6 +42,7 @@ setup(
     setup_requires=[
         'setuptools>=0.8',
     ],
+    zip_safe=False,
     tests_require=[
     ],
     classifiers=[
@@ -48,8 +50,9 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries :: Python Modules"
     ],
     test_suite='tests',

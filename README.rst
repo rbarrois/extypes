@@ -50,8 +50,6 @@ To check that everything went fine, fire a Python shell and import ``extypes``:
 Introduction
 ------------
 
-.. currentmodule:: extypes
-
 ``extypes`` provides a new type, ``ConstrainedSet``.
 
 This is a ``set()``-like object, but values can only be taken from a
@@ -118,8 +116,6 @@ But only valid options are accepted:
 
 Extensions: Django
 ------------------
-
-.. currentmodule:: extypes.django
 
 ``extypes`` also provides custom fields for Django - compatible with Django 1.7 and upwards.
 
