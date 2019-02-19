@@ -16,7 +16,8 @@ update:
 	pip install -r requirements_dev.txt
 	pip freeze
 
-release: fullrelease
+release:
+	fullrelease
 
 .PHONY: default clean update release
 
